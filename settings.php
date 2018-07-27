@@ -25,11 +25,14 @@ if ($ADMIN->fulltree) {
         $roleid[$i] = $role->id;
         $i++;
     }
-    $rolenames = array_combine($roleid, $rolename);
-    $profilefields = enrolmentor_helper::get_profile_fields();
-    
+    $rolenames = array_combine($roleid, $rolename);    
     $settings->add(new admin_setting_configselect('auth_enrolmentor/role', get_string('enrolmentor_settingrole', 'auth_enrolmentor'), get_string('enrolmentor_settingrolehelp', 'auth_enrolmentor'), '', $rolenames));
-    $settings->add(new admin_setting_configselect('auth_enrolmentor/compare', get_string('enrolmentor_settingcompare', 'auth_enrolmentor'), get_string('enrolmentor_settingcomparehelp', 'auth_enrolmentor'), 'username', array('username'=>'username','email'=>'email','id'=>'id')));
+
+    $compare = array('username'=>'username','email'=>'email','idnumber'=>'idnumber','id'=>'id');
+    $compare += enrolmentor_helper::get_profile_fields('shortname');
+    $settings->add(new admin_setting_configselect('auth_enrolmentor/compare', get_string('enrolmentor_settingcompare', 'auth_enrolmentor'), get_string('enrolmentor_settingcomparehelp', 'auth_enrolmentor'), 'username', $compare));
+
+    $profilefields = enrolmentor_helper::get_profile_fields();
     if($profilefields) {
         $settings->add(new admin_setting_configselect('auth_enrolmentor/profile_field', get_string('enrolmentor_settingprofile_field', 'auth_enrolmentor'), get_string('enrolmentor_settingprofile_fieldhelp', 'auth_enrolmentor'), '', $profilefields));
     } else {

@@ -169,7 +169,7 @@ class auth_plugin_enrolmentor extends auth_plugin_base {
         $roleid = $this->config->role;
         if($this->config->profile_field != null) {
             // Get all the user ids that we're a parent of.
-            $lista     = enrolmentor_helper::get_list_employees($user, $username, $this->config);
+            $lista     = enrolmentor_helper::get_list_employees($user, $this->config);
 
             // Get all the user ids that we're currently a parent of.
             $listb     = enrolmentor_helper::get_enrolled_employees($roleid, $user->id);

@@ -36,29 +36,26 @@ class enrolmentor_helper {
      */
     static public function get_list_employees($user, $username, $switch) {
         global $DB;
-        $list = array();
-        
+
         switch($switch->compare) {
-            case 'username':
-                $sql = "SELECT userid FROM {user_info_data}
-                WHERE data = '{$username}'
-                AND fieldid = '{$switch->profile_field}'";
-                break;
             case 'id':
-                $sql = "SELECT userid FROM {user_info_data}
-                WHERE data = '{$user->id}'
-                AND fieldid = '{$switch->profile_field}'";
-                break;
+            case 'idnumber':
+            case 'username':
             case 'email':
-                $sql = "SELECT userid FROM {user_info_data}
-                WHERE data = '{$user->email}'
-                AND fieldid = '{$switch->profile_field}'";
+                $data = $user->{$switch->compare};
+                break;
+            default:
+                $data = @$user->profile[$switch->compare];
                 break;
         }
-        
-        $list = array_keys($DB->get_records_sql($sql));
-        
-        return $list;
+
+        // don't compare empty values
+        if (empty($data)) {
+            return array();
+        }
+
+        $sql = "SELECT userid FROM {user_info_data} WHERE data = :data AND fieldid = :fieldid";
+        return array_keys($DB->get_records_sql($sql, array('data' => $data, 'fieldid' => $switch->profile_field)));
     }
     
     /**
@@ -66,10 +63,10 @@ class enrolmentor_helper {
      * returns an array of custom profile fields
      *
      */    
-    static public function get_profile_fields() {
+    static public function get_profile_fields($key = 'id') {
         global $DB;
         
-        $fields = $DB->get_records_menu('user_info_field', null, null, $fields = 'id, shortname');
+        $fields = $DB->get_records_menu('user_info_field', null, null, $fields = "$key, name");
 
         return $fields;
     }
