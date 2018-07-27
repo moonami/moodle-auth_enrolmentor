@@ -32,7 +32,7 @@ class enrolmentor_helper {
      * get_list_empolyees($user, $username)
      * returns an array of user ids for which the $user is a parent
      */
-    static public function get_list_employees($user, $username, $switch) {
+    static public function get_list_employees($user, $switch) {
         global $DB;
 
         switch($switch->compare) {
