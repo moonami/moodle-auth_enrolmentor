@@ -22,9 +22,10 @@ class enrolmentor_helper {
                 FROM {context} AS c
                 JOIN {role_assignments} AS ra ON ra.contextid = c.id
                 WHERE ra.roleid = :roleid
-                AND ra.userid = :userid";
+                AND ra.userid = :userid
+                AND c.contextlevel = :contextlevel";
 
-        return array_keys($DB->get_records_sql($sql, array('roleid' => $roleid, 'userid' => $userid)));
+        return array_keys($DB->get_records_sql($sql, array('roleid' => $roleid, 'userid' => $userid, 'contextlevel' => CONTEXT_USER)));
     }
 
     /**
