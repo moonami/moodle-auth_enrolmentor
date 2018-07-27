@@ -17,17 +17,14 @@ class enrolmentor_helper {
      */
     static public function get_enrolled_employees($roleid, $userid) {
         global $DB;
-        $list = array();
-        
+
         $sql  = "SELECT c.instanceid
                 FROM {context} AS c
                 JOIN {role_assignments} AS ra ON ra.contextid = c.id
-                WHERE ra.roleid='{$roleid}'
-                AND ra.userid='{$userid}'";
-        
-        $list = array_keys($DB->get_records_sql($sql));
-        
-        return $list;        
+                WHERE ra.roleid = :roleid
+                AND ra.userid = :userid";
+
+        return array_keys($DB->get_records_sql($sql, array('roleid' => $roleid, 'userid' => $userid)));
     }
 
     /**
