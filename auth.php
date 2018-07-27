@@ -19,7 +19,7 @@ class auth_plugin_enrolmentor extends auth_plugin_base {
     /**
      * Constructor.
      */
-    function auth_plugin_enrolmentor() {
+    public function __construct() {
         $this->authtype = 'enrolmentor';
         $this->config = get_config('auth_enrolmentor');
     }
